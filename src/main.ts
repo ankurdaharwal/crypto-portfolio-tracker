@@ -1,32 +1,39 @@
-/**
- * Some predefined delay values (in milliseconds).
- */
-export enum Delays {
-  Short = 500,
-  Medium = 2000,
-  Long = 5000,
-}
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Command } from 'commander';
+import { getBalances } from './app';
+// import { json2CSV } from './utils';
+// import { createGoogleSpreadsheet } from './app';
 
-/**
- * Returns a Promise<string> that resolves after a given time.
- *
- * @param {string} name - A name.
- * @param {number=} [delay=Delays.Medium] - A number of milliseconds to delay resolution of the Promise.
- * @returns {Promise<string>}
- */
-function delayedHello(
-  name: string,
-  delay: number = Delays.Medium,
-): Promise<string> {
-  return new Promise((resolve: (value?: string) => void) =>
-    setTimeout(() => resolve(`Hello, ${name}`), delay),
+let balances: any;
+
+try {
+  const program = new Command();
+  program.option(
+    '-a, --address',
+    'Enter an account address',
+    '0xfd352a65f6b7e0f4e16bb76e2a97f3a565445d99',
   );
-}
 
-// Below are examples of using ESLint errors suppression
-// Here it is suppressing a missing return type definition for the greeter function.
+  program.parse(process.argv);
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export async function greeter(name: string) {
-  return await delayedHello(name, Delays.Long);
+  const options = program.opts();
+  if (!options.address) process.exit(0);
+
+  getBalances(options.address).then((result: any) => {
+    balances = JSON.stringify(result);
+    console.log({ balances });
+  });
+
+  // Create CSV file
+  // .then(() => {
+  //   console.log({ balances, address: options.address });
+  //   json2CSV(balances, options.address);
+  // });
+
+  // Create a Google Spreadsheet
+  //   createGoogleSpreadsheet('A2', 'A3', balances).then((gsResult: any) => {
+  //     console.log(gsResult);
+  //   });
+} catch (e) {
+  console.error(e);
 }

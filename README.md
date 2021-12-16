@@ -1,12 +1,11 @@
-# node-typescript-boilerplate
+# Crypto Portfolio Tracker (WIP)
 
 [![Sponsor][sponsor-badge]][sponsor]
 [![TypeScript version][ts-badge]][typescript-4-5]
 [![Node.js version][nodejs-badge]][nodejs]
 [![APLv2][license-badge]][license]
-[![Build Status - GitHub Actions][gha-badge]][gha-ci]
 
-👩🏻‍💻 Developer Ready: A comprehensive template. Works out of the box for most [Node.js][nodejs] projects.
+👩🏻‍💻 CLI based tool to fetch balances from all supported protocols from Zapper formatted to JSON and exported to CSV or Google Spreadsheet [Node.js][nodejs] projects.
 
 🏃🏽 Instant Value: All basic tools included and configured:
 
@@ -19,7 +18,6 @@
 - Simple example of TypeScript code and unit test
 - .editorconfig for consistent file format
 - Reproducible environments thanks to [Volta][volta]
-- Example configuration for [GitHub Actions][gh-actions]
 
 🤲 Free as in speech: available under the APLv2 license.
 
@@ -27,31 +25,35 @@
 
 This project is intended to be used with the latest Active LTS release of [Node.js][nodejs].
 
-### Use as a repository template
-
-To start, just click the **[Use template][repo-template-action]** link (or the green button). Start adding your code in the `src` and unit tests in the `__tests__` directories.
-
 ### Clone repository
 
 To clone the repository, use the following commands:
 
 ```sh
-git clone https://github.com/jsynowiec/node-typescript-boilerplate
-cd node-typescript-boilerplate
-npm install
+git clone https://github.com/ankurdaharwal/crypto-portfolio-tracker
+cd crypto-portfolio-tracker
+yarn install
 ```
 
-### Download latest release
+### Environment Setup
 
-Download and unzip the current **main** branch or one of the tags:
+```
+cp .env.example .env
+```
+Enter the API keys and Spreadsheet ID (For Google Spreadsheet)
 
-```sh
-wget https://github.com/jsynowiec/node-typescript-boilerplate/archive/main.zip -O node-typescript-boilerplate.zip
-unzip node-typescript-boilerplate.zip && rm node-typescript-boilerplate.zip
+```
+# Google Spreadsheet API and Sheet ID
+GOOGLE_API=
+SHEET_ID=
+
+# ZAPPER API KEY
+ZAPPER_API=
 ```
 
 ## Available Scripts
 
+- `start` - start the project
 - `clean` - remove coverage data, Jest cache and transpiled files,
 - `prebuild` - lint source files and tests before building,
 - `build` - transpile TypeScript to ES6,
@@ -60,7 +62,21 @@ unzip node-typescript-boilerplate.zip && rm node-typescript-boilerplate.zip
 - `test` - run tests,
 - `test:watch` - interactive watch mode to automatically re-run tests
 
-## Additional Informations
+### Running the project
+
+- `yarn start -a <ETHEREUM ACCOUNT ADDRESS>` - start the project
+
+## Additional Utility Scripts
+
+- Prerequisite JQ formatter: `npm i -g jq`
+
+- Query Balances and Display JSON output
+
+```
+cd scripts
+. ./zapper.sh -a<ETHEREUM ACCOUNT ADDRESS>
+cat <ETHERUM ACCOUNT ADDRESS>.json | jq
+```
 
 ### Why include Volta
 
@@ -100,5 +116,3 @@ Licensed under the APLv2. See the [LICENSE](https://github.com/jsynowiec/node-ty
 [volta]: https://volta.sh
 [volta-getting-started]: https://docs.volta.sh/guide/getting-started
 [volta-tomdale]: https://twitter.com/tomdale/status/1162017336699838467?s=20
-[gh-actions]: https://github.com/features/actions
-[repo-template-action]: https://github.com/jsynowiec/node-typescript-boilerplate/generate
